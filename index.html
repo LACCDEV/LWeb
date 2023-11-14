@@ -208,6 +208,9 @@ function handleIncoming(sensor, dataReceived) {
     }  
   }
 
+// Variable to store the previous notification message
+var previousNotificationMessage = '';
+
 function showNotification(message) {
   // Check if notifications are supported
   if ('Notification' in window) {
@@ -215,13 +218,14 @@ function showNotification(message) {
     if (Notification.permission !== 'granted') {
       Notification.requestPermission();
     } else {
-      // Display the notification
-      const notification = new Notification('LEITZ Sensor', { body: message });
+      // Check if the new notification message is different from the previous one
+      if (message !== previousNotificationMessage) {
+        // Display the notification
+        new Notification('LEITZ Sensor', { body: message });
 
-      // Automatically close the notification after 5 seconds
-      setTimeout(() => {
-        notification.close();
-      }, 5000);
+        // Update the previousNotificationMessage
+        previousNotificationMessage = message;
+      }
     }
   } else {
     console.warn('Notifications not supported in this browser.');
