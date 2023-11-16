@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,8 +64,6 @@ button:hover {
 }
 
 </style>
-
-
 <script type="text/javascript">
 
 // Request notification permission when the page loads
@@ -208,6 +205,47 @@ function handleIncoming(sensor, dataReceived) {
     }  
   }
 
+function updateSensorValues(sensorData) {
+  mxValue = parseInt(sensorData['Mx'][sensorData['Mx'].length - 1]);
+  myValue = parseInt(sensorData['My'][sensorData['My'].length - 1]);
+  mzValue = parseInt(sensorData['Mz'][sensorData['Mz'].length - 1]);
+
+  const mxValueElement = document.getElementById('mx-value');
+  const myValueElement = document.getElementById('my-value');
+  const mzValueElement = document.getElementById('mz-value');
+
+  mxValueElement.textContent = `Mx: ${mxValue}`;
+  myValueElement.textContent = `My: ${myValue}`;
+  mzValueElement.textContent = `Mz: ${mzValue}`;
+
+}
+
+// Variables for storing the calibration values
+var calibratedMx = 0;
+var calibratedMy = 0;
+var calibratedMz = 0;
+var calibratedMxVal = 0;
+var calibratedMyVal = 0;
+var calibratedMzVal = 0;
+
+// UI elements for displaying calibrated values
+const calibratedMxElement = document.getElementById('calibrated-mx-value');
+const calibratedMyElement = document.getElementById('calibrated-my-value');
+const calibratedMzElement = document.getElementById('calibrated-mz-value');
+const calibrateButton = document.getElementById('calibrateButton');
+
+calibrateButton.addEventListener('click', function () {
+  // Store the current values as calibration values
+  calibratedMx = mxValue;
+  calibratedMy = myValue;
+  calibratedMz = mzValue;
+
+  // Display the calibrated values
+  calibratedMxElement.textContent = `Calibrated Mx: ${calibratedMx}`;
+  calibratedMyElement.textContent = `Calibrated My: ${calibratedMy}`;
+  calibratedMzElement.textContent = `Calibrated Mz: ${calibratedMz}`;
+});
+
 // Variable to store the previous notification message
 var previousNotificationMessage = '';
 
@@ -231,7 +269,6 @@ function showNotification(message) {
     console.warn('Notifications not supported in this browser.');
   }
 }
-
 
 
 // Liste von Punkten
